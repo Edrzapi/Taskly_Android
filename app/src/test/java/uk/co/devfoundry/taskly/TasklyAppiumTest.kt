@@ -27,7 +27,7 @@ class TasklyAppiumTest {
         val opts = UiAutomator2Options()
             .setDeviceName("Android Emulator")
             .setApp(apkFile.absolutePath)
-            .autoGrantPermissions() 
+            .autoGrantPermissions()
 
         driver = AndroidDriver(URL("http://127.0.0.1:4723/"), opts)
     }
@@ -38,9 +38,23 @@ class TasklyAppiumTest {
     }
 
     @Test
-    fun addTaskUpdatesTheTaskList() {
+    fun sanityCheckShowsNoTasksYet() {
 
+        val elements = driver.findElements(AppiumBy.xpath("//*"))
+        var foundNoTasks = false
 
+        elements.forEachIndexed { index, element ->
+            val text = element.text.trim()
+            println("${index + 1}. text: \"$text\"")
 
+            if (text == "No tasks yet") {
+                foundNoTasks = true
+            }
+        }
+
+        assertTrue("Expected to find 'No tasks yet' on screen", foundNoTasks)
+
+        println("Confirmed: App shows 'No tasks yet' on startup. Appium is working as expected")
     }
+
 }
