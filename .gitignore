@@ -1,0 +1,19 @@
+# === IntelliJ / Android Studio ===
+*.iml
+.idea/
+
+# === Gradle ===
+.gradle/
+!gradle-wrapper.jar
+!/gradlew
+!/gradlew.bat
+!/gradle/wrapper/gradle-wrapper.properties
+
+local.properties
+
+# === Build outputs ===
+**/build/
+
+# OS junk
+.DS_Store
+
