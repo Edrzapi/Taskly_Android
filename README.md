@@ -71,4 +71,8 @@ Finally, run appium before running your testcase.
 appium
 ```
 
+Your journey begins in the introduction-task branch. Your trainer will guide you through each step of the walkthrough.
 
+This baseline project provides a fully working app to start with. As you progress through each stage, you'll gradually refactor and enhance the application using Test-Driven Development (TDD) practices. Each step will challenge you to improve the codebase until your version mirrors—or even improves on—the provided functionality.
+
+Focus on writing tests first, building incrementally, and understanding the why, not just the how.
