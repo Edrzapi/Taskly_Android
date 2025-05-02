@@ -9,8 +9,7 @@ Taskly is a simple Kotlin/Jetpack Compose sample application designed as a basel
 - [Setup Environment](#setup-environment)  
 - [Getting Started](#getting-started)  
 - [Running Tests](#running-tests)  
-- [Getting Started with Appium](#appium-tests)  
-- [License](#license)
+- [Getting Started with Appium](#getting-started-with-appium)  
 
 ---
 
@@ -37,18 +36,21 @@ git clone https://github.com/Edrzapi/Taskly_Android.git
 cd Taskly_Android
 
 # Make the Gradle wrapper executable (if needed)
+```bash
 chmod +x gradlew
-
+```
 # Build & install onto your running emulator/device:
+```bash
 ./gradlew installDebug
-
+```
 # Or open in Android Studio and hit ▶️ Run
 
 ## Running Tests
 
 Ensure the basic tests work:
+```bash
 ./gradlew testDebugUnitTest
-
+```
 
 ## Getting Started with Appium
 
