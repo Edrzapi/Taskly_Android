@@ -3,16 +3,11 @@ package uk.co.devfoundry.taskly
 import io.appium.java_client.android.AndroidDriver
 import io.appium.java_client.AppiumBy
 import io.appium.java_client.android.options.UiAutomator2Options
-import io.appium.java_client.remote.AutomationName
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.Assert.assertTrue
-import org.junit.Ignore
-import org.openqa.selenium.support.ui.ExpectedConditions
-import org.openqa.selenium.support.ui.WebDriverWait
 import java.net.URL
-import java.time.Duration
 
 class TasklyAppiumTest {
     private lateinit var driver: AndroidDriver
