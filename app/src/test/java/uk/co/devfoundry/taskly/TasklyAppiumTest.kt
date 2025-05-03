@@ -7,7 +7,10 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.Assert.assertTrue
+import org.openqa.selenium.support.ui.ExpectedConditions
+import org.openqa.selenium.support.ui.WebDriverWait
 import java.net.URL
+import java.time.Duration
 
 class TasklyAppiumTest {
     private lateinit var driver: AndroidDriver
@@ -33,23 +36,39 @@ class TasklyAppiumTest {
     }
 
     @Test
-    fun sanityCheckShowsNoTasksYet() {
+    fun addTaskUpdatesTheTaskList() {
+        val wait = WebDriverWait(driver, Duration.ofSeconds(10))
 
-        val elements = driver.findElements(AppiumBy.xpath("//*"))
-        var foundNoTasks = false
+        // Click the FAB
+        val addButton =
+            wait.until(ExpectedConditions.presenceOfElementLocated(AppiumBy.accessibilityId("add_task_button")))
+        addButton.click()
 
-        elements.forEachIndexed { index, element ->
-            val text = element.text.trim()
-            println("${index + 1}. text: \"$text\"")
+        // Input new task
+        val inputField = driver.findElement(
+            AppiumBy.androidUIAutomator(
+                "new UiSelector().className(\"android.view.View\").descriptionContains(\"task_input\")"
+            )
+        )
 
-            if (text == "No tasks yet") {
-                foundNoTasks = true
-            }
-        }
+        // Send keys via script
+        inputField.click()
+        driver.executeScript("mobile: type", mapOf("text" to "Learn Appium"))
 
-        assertTrue("Expected to find 'No tasks yet' on screen", foundNoTasks)
+        // Confirm the add
+        val confirmButton =
+            wait.until(ExpectedConditions.presenceOfElementLocated(AppiumBy.accessibilityId("confirm_add_button")))
+        confirmButton.click()
 
-        println("Confirmed: App shows 'No tasks yet' on startup. Appium is working as expected")
+        // Check if task appears in list
+        val taskItem = wait.until(
+            ExpectedConditions.presenceOfElementLocated(
+                AppiumBy.androidUIAutomator(
+                    "new UiSelector().text(\"Learn Appium\")"
+                )
+            )
+        )
+
+        assertTrue("New task should be visible in the list", taskItem.isDisplayed)
     }
-
 }
