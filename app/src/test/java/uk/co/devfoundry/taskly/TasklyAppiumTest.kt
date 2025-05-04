@@ -73,11 +73,11 @@ class TasklyAppiumTest {
     }
 
     @Test
-    fun completeTaskViaDetailsScreenRemovesTaskFromList() {
+    fun CompleteTaskMarksTaskComplete() {
 
         // Add a task
 
-        
+
         // Confirm task name is visible in the list
 
 
