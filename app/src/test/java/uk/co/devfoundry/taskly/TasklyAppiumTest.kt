@@ -71,4 +71,18 @@ class TasklyAppiumTest {
 
         assertTrue("New task should be visible in the list", taskItem.isDisplayed)
     }
+
+    @Test
+    fun deleteTaskRemovesTaskFromList() {
+
+            // Add a task
+
+            // Delete the task
+
+            // Confirm deletion, (optional confirmation)
+
+            // Verify the task is no longer present
+
+
+    }
 }
