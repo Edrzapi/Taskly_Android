@@ -72,17 +72,61 @@ class TasklyAppiumTest {
         assertTrue("New task should be visible in the list", taskItem.isDisplayed)
     }
 
+
     @Test
-    fun deleteTaskRemovesTaskFromList() {
+    fun CompleteTaskMarksTaskComplete() {
 
-            // Add a task
+        val wait = WebDriverWait(driver, Duration.ofSeconds(10))
+        val taskName = "Detail Me"
 
-            // Delete the task
+        // Add a task
+        val addBtn = wait.until(
+            ExpectedConditions.presenceOfElementLocated(
+                AppiumBy.accessibilityId("add_task_button")
+            )
+        )
+        addBtn.click()
+        val input = wait.until(
+            ExpectedConditions.presenceOfElementLocated(
+                AppiumBy.accessibilityId("task_input")
+            )
+        )
+        input.sendKeys(taskName)
+        val confirmAdd = wait.until(
+            ExpectedConditions.presenceOfElementLocated(
+                AppiumBy.accessibilityId("confirm_add_button")
+            )
+        )
+        confirmAdd.click()
 
-            // Confirm deletion, (optional confirmation)
+        // Confirm task name is visible in the list
+        val listed = wait.until(
+            ExpectedConditions.presenceOfElementLocated(
+                AppiumBy.androidUIAutomator("new UiSelector().text(\"$taskName\")")
+            )
+        )
+        assertTrue("Task should appear in list after adding", listed.isDisplayed)
 
-            // Verify the task is no longer present
+        // Enter the task details screen
+        listed.click()
 
+        // Mark the task as completed
+        val completeBtn = wait.until(
+            ExpectedConditions.presenceOfElementLocated(
+                AppiumBy.accessibilityId("mark_complete_button")
+            )
+        )
+        completeBtn.click()
 
+        // Assert the task is marked completed in the list
+        driver.navigate().back()
+        val completedItem = wait.until(
+            ExpectedConditions.presenceOfElementLocated(
+                AppiumBy.androidUIAutomator(
+                    "new UiSelector().text(\"$taskName\").selected(true)"
+                )
+            )
+        )
+        assertTrue("Task should be marked completed in the list", completedItem.isDisplayed)
     }
 }
