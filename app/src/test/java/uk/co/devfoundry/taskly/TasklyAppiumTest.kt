@@ -87,6 +87,7 @@ class TasklyAppiumTest {
         // Mark the task as completed
 
 
-        // Assert the task no longer is present in the list
+        // Assert the task is marked completed in the list
+
     }
 }
