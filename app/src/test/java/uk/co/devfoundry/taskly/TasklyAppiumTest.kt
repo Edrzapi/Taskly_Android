@@ -73,16 +73,20 @@ class TasklyAppiumTest {
     }
 
     @Test
-    fun deleteTaskRemovesTaskFromList() {
+    fun completeTaskViaDetailsScreenRemovesTaskFromList() {
 
-            // Add a task
+        // Add a task
 
-            // Delete the task
-
-            // Confirm deletion, (optional confirmation)
-
-            // Verify the task is no longer present
+        
+        // Confirm task name is visible in the list
 
 
+        // Enter the task details screen
+
+
+        // Mark the task as completed
+
+
+        // Assert the task no longer is present in the list
     }
 }
