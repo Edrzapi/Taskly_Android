@@ -115,18 +115,17 @@ class TasklyAppiumTest {
         // Enter the task details screen
         listed.click()
 
+        // Mark the task as completed
         val completeBtn = wait.until(
             ExpectedConditions.presenceOfElementLocated(
                 (AppiumBy.accessibilityId("mark_complete_button"))
             )
         )
 
-
-
         completeBtn.click()
+
         // Assert the task is marked completed in the list
         driver.navigate().back()
-        print(driver.pageSource)
 
         val completedIcon = wait.until(
             ExpectedConditions.presenceOfElementLocated(
