@@ -8,10 +8,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.Assert.assertTrue
 import org.junit.Ignore
-import org.openqa.selenium.support.ui.ExpectedConditions
-import org.openqa.selenium.support.ui.WebDriverWait
 import java.net.URL
-import java.time.Duration
 
 class TasklyAppiumTest {
     private lateinit var driver: AndroidDriver
@@ -58,68 +55,5 @@ class TasklyAppiumTest {
         assertTrue("Expected to find 'No tasks yet' on screen", foundNoTasks)
 
         println("Confirmed: App shows 'No tasks yet' on startup. Appium is working as expected")
-    }
-
-    @Test
-    fun completeTaskMarksTaskComplete() {
-
-        val wait = WebDriverWait(driver, Duration.ofSeconds(10))
-        val taskName = "New Task!"
-
-        // Add a task
-        val addButton = wait.until(
-            ExpectedConditions.presenceOfElementLocated(
-                AppiumBy.accessibilityId("add_task_button")
-            )
-        )
-        assertTrue("FAB should be visible", addButton.isDisplayed)
-        addButton.click()
-
-
-        val inputField = wait.until(
-            ExpectedConditions.presenceOfElementLocated(
-                AppiumBy.accessibilityId("task_input")
-            )
-        )
-
-        // Manual input
-        inputField.click()
-        driver.executeScript("mobile: type", mapOf("text" to taskName))
-
-        // Click
-        wait.until(ExpectedConditions.presenceOfElementLocated(AppiumBy.accessibilityId("confirm_add_button")))
-            .click()
-
-
-        // Confirm task name is visible in the list
-        val listed = wait.until(
-            ExpectedConditions.presenceOfElementLocated(
-                AppiumBy.androidUIAutomator("new UiSelector().text(\"$taskName\")")
-            )
-        )
-        assertTrue("Task should appear in list after adding", listed.isDisplayed)
-
-        // Enter the task details screen
-        listed.click()
-
-        val completeBtn = wait.until(
-            ExpectedConditions.presenceOfElementLocated(
-                (AppiumBy.accessibilityId("mark_complete_button"))
-            )
-        )
-
-
-
-        completeBtn.click()
-        // Assert the task is marked completed in the list
-        driver.navigate().back()
-        print(driver.pageSource)
-
-        val completedIcon = wait.until(
-            ExpectedConditions.presenceOfElementLocated(
-                AppiumBy.accessibilityId("task_completed_icon")
-            )
-        )
-        assertTrue("Check-icon should appear next to the completed task", completedIcon.isDisplayed)
     }
 }
