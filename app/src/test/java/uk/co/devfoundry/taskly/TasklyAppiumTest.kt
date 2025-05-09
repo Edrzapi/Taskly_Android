@@ -26,7 +26,9 @@ class TasklyAppiumTest {
             .setDeviceName("Android Emulator")
             .setApp(apkFile.absolutePath)
             .autoGrantPermissions()
-
+            .setFullReset(true)
+            .setNoReset(false)
+        
         driver = AndroidDriver(URL("http://127.0.0.1:4723/"), opts)
     }
 
