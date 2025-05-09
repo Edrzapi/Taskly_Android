@@ -12,7 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextDecoration
@@ -24,7 +24,7 @@ import uk.co.devfoundry.taskly.ui.screen.list.TaskListViewModel
 fun TaskListScreen(
     viewModel: TaskListViewModel,
     onTaskClick: (String) -> Unit,
-    onSettingsClick: () -> Unit
+    onSettingsClick: () -> Unit,
 ) {
     val tasks by viewModel.tasks.collectAsState()
     var showDialog by remember { mutableStateOf(false) }
@@ -37,9 +37,10 @@ fun TaskListScreen(
                 actions = {
                     IconButton(
                         onClick = onSettingsClick,
-                        modifier = Modifier.semantics(mergeDescendants = true) {
-                            contentDescription = "settings_button"
-                        }
+                        modifier = Modifier
+                            .semantics(mergeDescendants = true) {
+                                contentDescription = "settings_button"
+                            }
                     ) {
                         Icon(Icons.Default.Settings, contentDescription = null)
                     }
@@ -49,14 +50,62 @@ fun TaskListScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { showDialog = true },
-                modifier = Modifier.semantics(mergeDescendants = true) {
-                    contentDescription = "add_task_button"
-                }
+                modifier = Modifier
+                    .semantics(mergeDescendants = true) {
+                        contentDescription = "add_task_button"
+                    }
             ) {
                 Icon(Icons.Default.Add, contentDescription = null)
             }
         }
     ) { padding ->
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = { Text("New Task") },
+                text = {
+                    TextField(
+                        value = newTitle,
+                        onValueChange = { newTitle = it },
+                        placeholder = { Text("Enter task title") },
+                        modifier = Modifier
+                            .clearAndSetSemantics {
+                                contentDescription = "task_input"
+                            }
+                            .fillMaxWidth()
+                    )
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            viewModel.addTask(newTitle.trim().ifEmpty { "New Task" })
+                            newTitle = ""
+                            showDialog = false
+                        },
+                        modifier = Modifier.clearAndSetSemantics {
+                            contentDescription = "confirm_add_button"
+                        }
+                    ) {
+                        Text("Add")
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            newTitle = ""
+                            showDialog = false
+                        },
+                        modifier = Modifier.clearAndSetSemantics {
+                            contentDescription = "cancel_add_button"
+                        }
+                    ) {
+                        Text("Cancel")
+                    }
+                }
+            )
+        }
+
+        // Original list rendering logic
         if (tasks.isEmpty()) {
             Box(
                 Modifier
@@ -75,7 +124,6 @@ fun TaskListScreen(
                         Modifier
                             .fillMaxWidth()
                             .clickable { onTaskClick(task.id) }
-                            .semantics { contentDescription = "task_item" }
                             .padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -92,58 +140,15 @@ fun TaskListScreen(
                         if (task.isComplete) {
                             Icon(
                                 Icons.Default.Check,
-                                contentDescription = null,
+                                contentDescription = "task_completed_icon",
                                 modifier = Modifier.size(20.dp)
                             )
                         }
+
                     }
                     HorizontalDivider()
                 }
             }
-        }
-
-        if (showDialog) {
-            AlertDialog(
-                onDismissRequest = { showDialog = false },
-                title = { Text("New Task") },
-                text = {
-                    TextField(
-                        value = newTitle,
-                        onValueChange = { newTitle = it },
-                        placeholder = { Text("Enter task title") },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .testTag("task_input")
-                            .semantics {
-                                contentDescription = "task_input"
-                            }
-                    )
-
-                },
-                confirmButton = {
-                    TextButton(
-                        onClick = {
-                            viewModel.addTask(newTitle.trim().ifEmpty { "New Task" })
-                            newTitle = ""
-                            showDialog = false
-                        },
-                        modifier = Modifier.semantics { contentDescription = "confirm_add_button" }
-                    ) {
-                        Text("Add")
-                    }
-                },
-                dismissButton = {
-                    TextButton(
-                        onClick = {
-                            newTitle = ""
-                            showDialog = false
-                        },
-                        modifier = Modifier.semantics { contentDescription = "cancel_add_button" }
-                    ) {
-                        Text("Cancel")
-                    }
-                }
-            )
         }
     }
 }
