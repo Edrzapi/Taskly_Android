@@ -1,4 +1,6 @@
 package uk.co.devfoundry.taskly.ui.screen
+
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,7 +15,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TaskListScreen() {
+fun TaskListScreen(onTaskClick: (String) -> Unit) {
+
     var showDialog by remember { mutableStateOf(false) }
     var taskInput by remember { mutableStateOf("") }
     val tasks = remember { mutableStateListOf<String>() }
@@ -41,7 +44,12 @@ fun TaskListScreen() {
             } else {
                 LazyColumn {
                     items(tasks) { task ->
-                        Column {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable { onTaskClick(task) } // Trigger callback when clicked
+                                .padding(vertical = 8.dp)
+                        ) {
                             Text(text = task)
                             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
                         }
