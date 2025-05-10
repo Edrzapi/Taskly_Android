@@ -44,13 +44,10 @@ fun TaskDetailScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "Task ID:",
+                text = "Task ID: ${taskId}",
                 style = MaterialTheme.typography.labelLarge
             )
-            Text(
-                text = taskId,
-                style = MaterialTheme.typography.bodyLarge
-            )
+
 
             Spacer(Modifier.height(24.dp))
 
